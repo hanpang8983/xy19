@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanpang.framework.rbac.user.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.hanpang.framework.rbac.user.model.User" >
+    <id column="user_id" property="user_id" jdbcType="INTEGER" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_name" property="user_name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="create_date" property="create_date" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="fk_role_id" property="fk_role_id" jdbcType="INTEGER" />
+    <result column="user_image" property="user_image" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, account, password, user_name, sex, tel, create_date, status, fk_role_id,user_image
+  </sql>
+  
+  <resultMap type="com.hanpang.framework.rbac.user.model.User" id="UserSimpleResultMap" extends="BaseResultMap">
+    <association property="role" javaType="com.hanpang.framework.rbac.role.model.Role"
+    column="fk_role_id"
+    resultMap="com.hanpang.framework.rbac.role.mapper.RoleMapper.BaseResultMap"
+    />
+  </resultMap>
+  
+  <!-- 验证账号是否重名 -->
+  <select id="validation" parameterType="string" resultType="int">
+    select count(user_id) from sys_user where account=#{account}
+  </select>
+  
+  <!-- 获取所有的用户信息，包含角色名称 -->
+  <select id="list" resultMap="UserSimpleResultMap">
+       select 
+            u.*,
+            r.*
+        from sys_user u 
+        left join
+            sys_role r
+        on u.fk_role_id=r.role_id
+  </select>
+  
+  
+  
+    <select id="login" resultMap="UserSimpleResultMap">
+        select 
+            u.*,
+            r.*
+        from sys_user u 
+        left join
+            sys_role r
+        on u.fk_role_id=r.role_id
+        where
+        u.account=#{param1}
+        and
+        u.password=#{param2}
+    
+    </select>  
+ 
+  
+  
+  
+  <select id="load" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from sys_user
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="add" parameterType="com.hanpang.framework.rbac.user.model.User" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="user_name != null" >
+        user_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="create_date != null" >
+        create_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="fk_role_id != null" >
+        fk_role_id,
+      </if>
+      <if test="user_image != null" >
+        user_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="user_name != null" >
+        #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="create_date != null" >
+        #{create_date,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="fk_role_id != null" >
+        #{fk_role_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_image != null" >
+        #{user_image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.hanpang.framework.rbac.user.model.User" >
+    update sys_user
+    <set >
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="user_name != null" >
+        user_name = #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="create_date != null" >
+        create_date = #{create_date,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="fk_role_id != null" >
+        fk_role_id = #{fk_role_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_image != null" >
+        user_image = #{user_image,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

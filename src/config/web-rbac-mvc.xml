@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+
+    <!-- 启动SpringMVC的注解 -->
+    <mvc:annotation-driven/>
+    <!-- 扫描 -->
+    <context:component-scan base-package="com.hanpang">
+        <!-- 只扫描含有@Controller注解的类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+       <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+    
+    <!-- 配置静态资源 -->
+    <mvc:resources location="/resource/" mapping="/resource/**"/>
+    <mvc:resources location="/upload/" mapping="/upload/**"/>
+
+    <!-- 配置JSP的视图解析器 -->
+    <bean id="jspViewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 使用的是JSTL的视图，需要引用对应的JAR -->
+        <property name="viewClass"
+            value="org.springframework.web.servlet.view.JstlView" />
+        <!-- 前缀，一般情况下建议jsp放置到web-inf文件夹下载，只是针对于请求转发有用 -->
+        <property name="prefix" value="/WEB-INF/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+    <!-- 配置上传信息 -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" />
+        <!-- 运行最大上传文件为10M -->
+        <property name="maxUploadSize" value="10485760" />
+        <!-- 临时的上传目录 -->
+        <property name="uploadTempDir" value="/temp" />
+        <property name="maxInMemorySize" value="2048" />
+    </bean>
+    
+    <!-- 配置简单的统一异常处理 -->
+    <bean id="exceptionResolver"
+        class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!-- /WEB-INF/jsp/error.jsp -->
+                <prop key="java.lang.Exception">jsp/error</prop>
+                <prop key="com.hanpang.framework.base.exception.RbacException">jsp/error</prop>
+            </props>
+        </property>
+        <property name="exceptionAttribute" value="ex"></property>
+        <property name="defaultErrorView" value="jsp/error"></property>
+        <!-- 默认HTTP状态码 -->
+        <property name="defaultStatusCode" value="500"></property>
+        <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+        <property name="warnLogCategory" value="WARN"></property>
+    </bean>
+    
+
+</beans>

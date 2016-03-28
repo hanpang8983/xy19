@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hanpang.framework.rbac.role.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.hanpang.framework.rbac.role.model.Role" >
+    <id column="role_id" property="role_id" jdbcType="INTEGER" />
+    <result column="role_name" property="role_name" jdbcType="VARCHAR" />
+    <result column="role_desc" property="role_desc" jdbcType="VARCHAR" />
+    <result column="role_status" property="role_status" jdbcType="VARCHAR" />
+    <result column="role_photo" property="role_photo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_id, role_name, role_desc, role_status,role_photo
+  </sql>
+  
+  <resultMap type="com.hanpang.framework.rbac.role.model.Role" id="RoleSimpleResultMap" extends="BaseResultMap">
+  
+    <collection property="menuList" ofType="com.hanpang.framework.rbac.menu.model.Menu"
+        column="role_id"
+        resultMap="com.hanpang.framework.rbac.menu.mapper.MenuMapper.BaseResultMap"
+    />
+  </resultMap>
+  
+  <!-- 获取角色的所有信息 -->
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_role
+  </select>
+  <!-- 通过角色名称获取记录数 -->
+  <select id="validation" parameterType="string" resultType="int">
+    select count(role_id) from sys_role where role_name=#{role_name}
+  </select>
+  
+  
+  <select id="load" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where role_id = #{role_id,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from sys_role
+    where role_id = #{role_id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="add" parameterType="com.hanpang.framework.rbac.role.model.Role" >
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="role_id != null" >
+        role_id,
+      </if>
+      <if test="role_name != null" >
+        role_name,
+      </if>
+      <if test="role_desc != null" >
+        role_desc,
+      </if>
+      <if test="role_status != null" >
+        role_status,
+      </if>
+      <if test="role_photo != null" >
+        role_photo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="role_id != null" >
+        #{role_id,jdbcType=INTEGER},
+      </if>
+      <if test="role_name != null" >
+        #{role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="role_desc != null" >
+        #{role_desc,jdbcType=VARCHAR},
+      </if>
+      <if test="role_status != null" >
+        #{role_status,jdbcType=VARCHAR},
+      </if>
+      <if test="role_photo != null" >
+        #{role_photo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.hanpang.framework.rbac.role.model.Role" >
+    update sys_role
+    <set >
+      <if test="role_name != null" >
+        role_name = #{role_name,jdbcType=VARCHAR},
+      </if>
+      <if test="role_desc != null" >
+        role_desc = #{role_desc,jdbcType=VARCHAR},
+      </if>
+      <if test="role_status != null" >
+        role_status = #{role_status,jdbcType=VARCHAR},
+      </if>
+      <if test="role_photo != null" >
+        role_photo = #{role_photo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{role_id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>
