@@ -20,7 +20,7 @@
 		--%>
 		<base href="<%=basePath%>">
 		<meta charset="UTF-8">
-		<title>无标题文档</title>
+		<title>主页面</title>
 		<link href="resource/admin/css/style.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="resource/admin/js/jquery.js"></script>
 
@@ -41,7 +41,7 @@
     
     <div class="welinfo">
     <span><img src="resource/admin/images/sun.png" alt="天气" /></span>
-    <b>Admin早上好，欢迎使用信息管理系统</b>(admin@uimaker.com)
+    <b>${sessionScope.session_user.account }早上好，欢迎使用信息管理系统</b>(admin@uimaker.com)
     <a href="#">帐号设置</a>
     </div>
     

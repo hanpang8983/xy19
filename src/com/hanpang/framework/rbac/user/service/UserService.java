@@ -3,6 +3,7 @@ package com.hanpang.framework.rbac.user.service;
 import java.util.List;
 
 import com.hanpang.framework.base.exception.RbacException;
+import com.hanpang.framework.base.model.Pager;
 import com.hanpang.framework.rbac.user.model.User;
 /**
  * 关于SYS_USER的业务逻辑层
@@ -28,6 +29,8 @@ public interface UserService {
 	public void updateUserRole(Integer user_id,Integer role_id)throws RbacException;
 	
 	public List<User> list();
+	
+	public Pager find(Pager pager);
 	
 	public void validation(String account);
 

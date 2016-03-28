@@ -39,8 +39,28 @@
             sys_role r
         on u.fk_role_id=r.role_id
   </select>
+  <!-- 分页开始 -->
+  <!-- 获取所有的用户信息，包含角色名称,使用的是分页 -->
+  <select id="find" parameterType="map" resultMap="UserSimpleResultMap">
+       select 
+            u.*,
+            r.*
+        from sys_user u 
+        left join
+            sys_role r
+        on u.fk_role_id=r.role_id
+        limit ${pageNow},${pageSize}
+  </select>
+  <select id="find_count" resultType="int">
+        select 
+           count(u.user_id)
+        from sys_user u 
+        left join
+            sys_role r
+        on u.fk_role_id=r.role_id
+  </select>
   
-  
+  <!-- 分页结束 -->
   
     <select id="login" resultMap="UserSimpleResultMap">
         select 

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hanpang.framework.base.controller.SysControler;
+import com.hanpang.framework.base.model.Pager;
 import com.hanpang.framework.rbac.user.model.User;
 import com.hanpang.framework.rbac.user.service.UserService;
 @Controller
@@ -39,6 +40,24 @@ public class UserController extends SysControler {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/find")
+	public ModelAndView find(Pager pager){
+		ModelAndView mav = new ModelAndView();
+		try {//不会，就在这里捕获异常信息
+			mav.addObject("pager", this.userService.find(pager));
+			
+			mav.setViewName("jsp/user/find");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return mav;
+	}
+	
+	
+	
+	
 	@RequestMapping(value="/add",method=RequestMethod.GET)
 	public ModelAndView toAddPage(){
 		ModelAndView mav = new ModelAndView();

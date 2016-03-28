@@ -1,11 +1,14 @@
 package com.hanpang.framework.rbac.user.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hanpang.framework.base.exception.RbacException;
+import com.hanpang.framework.base.model.Pager;
 import com.hanpang.framework.rbac.user.mapper.UserMapper;
 import com.hanpang.framework.rbac.user.model.User;
 import com.hanpang.framework.rbac.user.service.UserService;
@@ -88,6 +91,28 @@ public class UserServiceImpl implements UserService {
 			throw new RbacException("改账号已经被使用,请重新输入");
 		}
 		
+	}
+
+	@Override
+	public Pager find(Pager pager) {
+		//1.传递数据使用Map
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("pageNow", (pager.getPageNow()-1)*pager.getPageSize());
+		map.put("pageSize", pager.getPageSize());
+		
+		//2.获取了分页的数据
+		List<User> userList = this.userMapper.find(map);
+		//存储到Pager里面
+		pager.setDatas(userList);
+		//3.总记录数
+		int totalCount = this.userMapper.find_count();
+		pager.setTotalCount(totalCount);
+		//总页数
+		int pageSize = pager.getPageSize();
+		int totalPages = totalCount%pageSize==0?totalCount/pageSize:totalCount/pageSize+1;
+		pager.setTotalPages(totalPages);
+		
+		return pager;
 	}
 
 }
