@@ -49,22 +49,84 @@
             });
             d.showModal();
         }
+        
+        function toUpdateUser(user_id){
+            var d = top.dialog({
+                width:500,
+                height:450,
+                url:'sys/user/update/'+user_id,//使用路径传递简单数据
+                onclose: function () {
+                    if (this.returnValue=="success") {
+                        window.location.href=window.location.href;
+                    }
+                }
+            });
+            d.showModal();
+        }
 
 
         //变更状态方法
-        function toChangeStatus(){
+        function toChangeStatus(user_id,status){
+            
+            //判断用户的ID,如果为负数那么久不能进行该操作
+            if(user_id<0){
+            	alert("该用户无法进行该操作，已经被锁定的账号信息!");
+            	return false;
+            }
+            
+            var title = "";
+            if(status==1){
+                status=2;
+                title="<strong style='color:red;font-size:17px;'>禁用</strong>";
+            }else{
+                status=1;
+                title="<strong style='color:green;font-size:17px;'>启用</strong>";
+            }
+        	
+        	
             var d = dialog({
-                title: '提示',
-                content: '按钮回调函数返回 false 则不许关闭',
-                okValue: '确定',
+            	title: '友情提示',
+                content: '您确定要'+title+'操作吗?',
+                okValue: '狠心一下',
                 ok: function () {
-                    this.title('提交中…');
-                    return false;
+                	$.post("sys/user/status",{_method:"put",user_id:user_id,status:status},function(data){
+                        if(data.flag=="success"){
+                            window.location.href= window.location.href;
+                        }
+                    })
                 },
-                cancelValue: '取消',
+                cancelValue: '放弃了!',
                 cancel: function () {}
             });
             d.show();
+        }
+        
+        function toChangeRole(user_id){
+        	var d = top.dialog({
+                width:500,
+                height:200,
+                url:'sys/user/role?user_id='+user_id,//好久没有使用问好传递数据了，练习使用一下,等号后面不要写空格哟
+                onclose: function () {
+                    if (this.returnValue=="success") {
+                        window.location.href=window.location.href;
+                    }
+                }
+            });
+            d.showModal();
+        }
+        
+        function toDetail(user_id){
+        	var d = top.dialog({
+                width:500,
+                height:450,
+                url:'sys/user/detail/'+user_id,//好久没有使用问好传递数据了，练习使用一下,等号后面不要写空格哟
+                onclose: function () {
+                    if (this.returnValue=="success") {
+                        window.location.href=window.location.href;
+                    }
+                }
+            });
+            d.showModal();
         }
 
 
@@ -103,14 +165,24 @@
 	               style="width: 168px;height: 126px;"
 	               />
 	            </span>
-	            <h2>${user.user_name }</h2>
+	            <h2>
+	               ${user.user_name }&nbsp;|&nbsp;
+	               <c:out value="${user.role.role_name }" escapeXml="false">
+	                   <font style="color: red;font-weight: bold;">无角色</font>
+	               </c:out>
+	            </h2>
 	            <p>
-	               <a href="#">维护</a>&nbsp;&nbsp;&nbsp;&nbsp;
-	               <a href="javascript:void(0)" onclick="toChangeStatus()">状态</a>
+	               <a href="javascript:void(0)" onclick="toUpdateUser('${user.user_id}')">维护</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	               <c:if test="${user.status==1 }" var="flag">
+	                   <a href="javascript:void(0)" onclick="toChangeStatus('${user.user_id}','${user.status }')" style="font-weight: bold;color: green;">已启用</a>
+	               </c:if>
+	                <c:if test="${!flag }">
+                       <a href="javascript:void(0)" onclick="toChangeStatus('${user.user_id}','${user.status }')" style="font-weight:bold;color: red;">已禁用</a>
+                   </c:if>
 	            </p>
 	            <p>
-	               <a href="#">角色</a>&nbsp;&nbsp;&nbsp;&nbsp;
-	               <a href="#">详细</a></p>
+	               <a href="javascript:void(0)" onclick="toChangeRole('${user.user_id}')">角色</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	               <a href="javascript:void(0)" onclick="toDetail('${user.user_id}')">详细</a></p>
 	        </li>
         </c:forEach>
         

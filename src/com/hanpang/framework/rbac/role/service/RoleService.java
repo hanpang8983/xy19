@@ -67,4 +67,9 @@ public interface RoleService {
 	 * @throws RbacException
 	 */
 	public void validation(String role_name)throws RbacException;
+	/**
+	 * 描述:获取可用角色的列表信息，状态为1的为可用角色
+	 * @return
+	 */
+	public List<Role> getEnableRoleList();
 }

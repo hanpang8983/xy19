@@ -121,4 +121,9 @@ public class RoleServiceImpl extends BaseServcie implements RoleService{
 		return roleMapper.list();
 	}
 
+	@Override
+	public List<Role> getEnableRoleList() {
+		return this.roleMapper.getEnableRoleList();
+	}
+
 }

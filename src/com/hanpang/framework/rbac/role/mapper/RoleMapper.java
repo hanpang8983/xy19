@@ -16,5 +16,7 @@ public interface RoleMapper {
     List<Role> list();
     
     int validation(String role_name);
+    
+    List<Role> getEnableRoleList();
 
 }

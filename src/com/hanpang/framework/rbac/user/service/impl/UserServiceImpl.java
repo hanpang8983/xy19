@@ -63,7 +63,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void update(User user) throws RbacException {
-		// TODO Auto-generated method stub
+		try {
+			this.userMapper.update(user);
+		} catch (Exception e) {
+			throw new RbacException("更新系统用户失败,异常信息为:"+e.getMessage());
+		}
 
 	}
 
@@ -94,18 +98,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Pager find(Pager pager) {
+	public Pager find(Pager pager,User user) {
 		//1.传递数据使用Map
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("pageNow", (pager.getPageNow()-1)*pager.getPageSize());
 		map.put("pageSize", pager.getPageSize());
+		if(user!=null){
+			if(user.getUser_name()!=null&&user.getUser_name().trim().length()>0){
+				map.put("user_name", user.getUser_name().trim());
+			}
+			if(user.getStatus()!=null&&user.getStatus().trim().length()>0){
+				map.put("status", user.getStatus());
+			}
+		}
 		
 		//2.获取了分页的数据
 		List<User> userList = this.userMapper.find(map);
 		//存储到Pager里面
 		pager.setDatas(userList);
 		//3.总记录数
-		int totalCount = this.userMapper.find_count();
+		int totalCount = this.userMapper.find_count(map);
 		pager.setTotalCount(totalCount);
 		//总页数
 		int pageSize = pager.getPageSize();
@@ -113,6 +125,11 @@ public class UserServiceImpl implements UserService {
 		pager.setTotalPages(totalPages);
 		
 		return pager;
+	}
+
+	@Override
+	public User load(Integer user_id) {
+		return this.userMapper.load(user_id);
 	}
 
 }

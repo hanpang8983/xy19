@@ -30,8 +30,10 @@ public interface UserService {
 	
 	public List<User> list();
 	
-	public Pager find(Pager pager);
+	public Pager find(Pager pager,User user);
 	
 	public void validation(String account);
+	
+	public User load(Integer user_id);
 
 }

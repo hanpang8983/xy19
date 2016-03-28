@@ -115,17 +115,38 @@
 </div>
 
 <div class="rightinfo">
-    <div class="tools">
-        <ul class="toolbar">
+     <div class="tools">
+           <form action="sys/user/find" method="post" id="searchForm">
+          <ul class="seachform">
+            <li>
+                <label>姓名</label><input name="user_name"  type="text" class="scinput" value="${user.user_name }" placeholder="请输入姓名"/>
+                
+            </li>
+            <li><label>状态</label>  
+            <select name="status" class="select_show">
+	              <option value="">请选择状态</option>
+	              <option value="1" 
+	              <c:if test="${user.status==1 }">selected="selected"</c:if>
+	              >可用</option>
+	              <option value="2"
+	              <c:if test="${user.status==2 }">selected="selected"</c:if>
+	              >禁用</option>
+            </select>
+            </li>
+            
+            
+            <li><label>&nbsp;</label><input   class="scbtn" type="button" value="查询" onclick="toPage('5')"/></li>
+            
+         </ul>
+         <input type="hidden" name="pageNow" id="pageNow" value="${pager.pageNow }">
+         <input type="hidden"  id="totalPages" value="${pager.totalPages }">
+         </form>
+        
+        <ul class="seachform1">
             <li class="click" onclick="toAddUser()"><span><img src="resource/admin/images/t01.png"/></span>新建用户</li>
         </ul>
+    
     </div>
-    <!-- 设置隐藏表单 -->
-    <form action="sys/user/find" method="post" id="searchForm">
-        <input type="hidden" name="pageNow" id="pageNow" value="${pager.pageNow }">
-        <input type="hidden"  id="totalPages" value="${pager.totalPages }">
-          
-    </form>
 
     <ul class="imglist">
         <c:forEach items="${pager.datas }" var="user">

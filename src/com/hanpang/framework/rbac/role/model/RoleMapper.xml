@@ -31,6 +31,14 @@
     select count(role_id) from sys_role where role_name=#{role_name}
   </select>
   
+  <!-- 获取可用列表的信息 -->
+  <select id="getEnableRoleList" resultMap="BaseResultMap">
+     select
+         <include refid="Base_Column_List"/>
+     from sys_role
+     where role_status=1
+  </select>
+  
   
   <select id="load" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

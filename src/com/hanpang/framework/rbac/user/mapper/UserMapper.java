@@ -22,7 +22,7 @@ public interface UserMapper {
     
     List<User> find(Map<String,Object> map);
     
-    int find_count();
+    int find_count(Map<String,Object> map);
     
 
 }
