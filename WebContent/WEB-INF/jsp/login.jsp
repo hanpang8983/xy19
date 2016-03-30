@@ -25,48 +25,67 @@
 		<!-- 使用动态包含 -->
 		<jsp:include page="/resource/include.jsp"/>
         <script src="resource/admin/js/cloud.js" type="text/javascript"></script>
-<script language="javascript">
-	$(function() {
-		$('.loginbox').css({
-			'position' : 'absolute',
-			'left' : ($(window).width() - 692) / 2
-		});
-		$(window).resize(function() {
-			$('.loginbox').css({
-				'position' : 'absolute',
-				'left' : ($(window).width() - 692) / 2
+        <script type="text/javascript" src="resource/jquery.md5.js"></script>
+		<script language="javascript">
+			$(function() {
+				$('.loginbox').css({
+					'position' : 'absolute',
+					'left' : ($(window).width() - 692) / 2
+				});
+				$(window).resize(function() {
+					$('.loginbox').css({
+						'position' : 'absolute',
+						'left' : ($(window).width() - 692) / 2
+					});
+				})
+		
 			});
-		})
-
-	});
-</script>
-<script type="text/javascript">
-        function toSub(){
-            /*在JavaScript当中定义函数，两种:
-              1. function 方法名(){}  有名函数--定义式        先调用后声明
-              2. var 变量名=function(){} 匿名函数--变量式 先声明后调用
-            */
-            var account = document.getElementById("account").value;
-            var password = document.getElementById("password").value;
-            if(account.length==0||account.length>16){
-                alert("账号输入有误请重新核对！");
-                document.getElementById("account").focus();
-                return false;
-            }
-            
-            if(password.length==0){
-                alert("请输入密码信息！");
-                document.getElementById("password").focus();
-                return false;
-            }
-            
-            return true;
-            
-        }
-        window.onload = function(){
-            document.getElementById("account").focus();
-        }
-</script>
+		</script>
+		<script type="text/javascript">
+		        function toSub(){
+		            /*在JavaScript当中定义函数，两种:
+		              1. function 方法名(){}  有名函数--定义式        先调用后声明
+		              2. var 变量名=function(){} 匿名函数--变量式 先声明后调用
+		            */
+		            var account = document.getElementById("account").value;
+		            var password = document.getElementById("password").value;
+		           
+		            
+		            if(account.length==0||account.length>16){
+		                alert("账号输入有误请重新核对！");
+		                document.getElementById("account").focus();
+		                return false;
+		            }
+		            
+		            if(password.length==0){
+		                alert("请输入密码信息！");
+		                document.getElementById("password").focus();
+		                return false;
+		            }
+		            var code = $.trim(document.getElementById("code").value);
+		            
+		            if(code.length==0){
+		            	alert("请输入验证码！");
+		                document.getElementById("code").focus();
+		                return false;
+		            }
+		            
+		            
+		            //对密码进行重新赋值
+		            $("#password").val($.md5(password));
+		         
+		            
+		            return true;
+		            
+		        }
+		        $(function(){
+		        	document.getElementById("account").focus();
+		        	$("img").click(function(){
+		        		this.src="sys/code?"+(new Date()).getTime();//使用时间戳，欺骗浏览器，都是一个新的请求，注意有问号
+		        	});
+		        });
+		       
+		</script>
 
 </head>
 
@@ -100,7 +119,8 @@
 				<li><input name="password" id="password" type="text"
 					class="loginpwd" placeholder="请输入密码" /></li>
 				<li><input name="code" id="code" type="text" class="logincode"
-					placeholder="请输入验证码" /> <img src="resource/admin/images/code_num.jpg" alt=""
+					placeholder="请输入验证码" /> <img src="sys/code" alt="没有图片"
+					title="看不清楚,点击一下"
 					style="position: absolute; left: 490px; width: 135px; height: 45px;" />
 				</li>
 				<li><input type="submit" class="loginbtn" value="登录" /> 

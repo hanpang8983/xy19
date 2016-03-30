@@ -1,1 +1,5 @@
+/beans.xml
 /com/
+/config/
+/log4j.properties
+/mybatis-config.xml

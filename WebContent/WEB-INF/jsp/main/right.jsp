@@ -23,6 +23,43 @@
 		<title>主页面</title>
 		<link href="resource/admin/css/style.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="resource/admin/js/jquery.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			toShowDate();
+			
+		});
+		
+		function toShowDate(){
+			var date = new Date();
+			//获取当前的小时
+			var hours = date.getHours();
+			var str = "";
+			if(hours<6){
+				str = "凌晨好";
+			}
+			else if(hours<9){
+				str = "早上好";
+			}
+			else if(hours<12){
+                str = "上午好";
+            }
+			else if(hours<14){
+                str = "中午好";
+            }
+			else if(hours<17){
+                str = "下午好";
+            }
+			else if(hours<19){
+                str = "傍晚好";
+            }
+			else if(hours<22){
+                str = "晚上好";
+            }else{
+            	str = "深夜好";
+            }
+			$("#title").html(str);
+		}
+		</script>
 
 </head>
 
@@ -32,7 +69,7 @@
     <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-    <li><a href="#">首页</a></li>
+    <li>首页</li>
     </ul>
     </div>
     
@@ -41,7 +78,7 @@
     
     <div class="welinfo">
     <span><img src="resource/admin/images/sun.png" alt="天气" /></span>
-    <b>${sessionScope.session_user.account }早上好，欢迎使用信息管理系统</b>(admin@uimaker.com)
+    <b><span id="title"></span>${sessionScope.session_user.account }，欢迎使用权限管理系统</b>(hanpang8983@foxmail.com)
     <a href="#">帐号设置</a>
     </div>
     

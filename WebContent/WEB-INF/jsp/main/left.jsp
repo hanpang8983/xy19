@@ -22,7 +22,7 @@
 		参考文章:http://www.cnblogs.com/muqianying/archive/2012/03/16/2400280.html
 		--%>
 		
-		<title>无标题文档</title>
+		<title>导航页面</title>
 		<!-- 动态包含引入静态文件 -->
 		<jsp:include page="/resource/include.jsp"/>
 		
@@ -73,7 +73,7 @@
 </head>
 
 <body style="background:#f0f9fd;">
-    <div class="lefttop"><span></span>通讯录</div>
+    <div class="lefttop"><span></span>HP权限管理</div>
     
     <dl class="leftmenu">
      <c:forEach items="${leftParentMenuList }" var="parent">   

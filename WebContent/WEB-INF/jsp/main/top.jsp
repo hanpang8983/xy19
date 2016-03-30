@@ -47,7 +47,7 @@
 <body style="background:url(resource/admin/images/topbg.gif) repeat-x;">
 
     <div class="topleft">
-    <a href="main.html" target="_parent"><img src="resource/admin/images/logo.png" title="系统首页" /></a>
+    <a href="sys/frameset/right" target="right"><img src="resource/admin/images/logo.png" title="系统首页" /></a>
     </div>
     <!--    
     <ul class="nav">

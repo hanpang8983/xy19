@@ -98,7 +98,7 @@
         <li><label>姓名</label><input name="user_name" id="user_name" type="text" class="dfinput" maxlength="10" placeholder="请输入用户姓名，不能超过10个字符"/></li>
         <li><label>账号</label><input name="account" id="account" type="text" class="dfinput" maxlength="10" placeholder="账号信息，不能超过10个字符"/></li>
         <li><label>密码</label><input type="text" class="dfinput" value="初始化密码:123456" readonly="readonly"/>
-                                <input type="hidden" name="password" value="123456">
+                                <input type="hidden" name="password" value="e10adc3949ba59abbe56e057f20f883e">
         </li>
         <li><label>电话</label><input name="tel" id="tel" type="text" class="dfinput" maxlength="11" placeholder="请输入有效的手机号码"/></li>
         <li><label>性别</label>
