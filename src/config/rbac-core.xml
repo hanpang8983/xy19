@@ -97,6 +97,16 @@
         <!-- 定义的是切入点 -->
         <aop:pointcut expression="execution(* com.hanpang..*Service.*(..))" id="serviceMethodPointCut"/>
         <aop:advisor advice-ref="serviceAdvice" pointcut-ref="serviceMethodPointCut"/>
+        <aop:aspect ref="operationLogAspect" order="1">
+            <aop:pointcut expression="(execution(* com.hanpang..*Service.add*(..))
+                                  or execution(* com.hanpang..*Service.update*(..))
+                                  or execution(* com.hanpang..*Service.change*(..))
+                                  or execution(* com.hanpang..*Service.del*(..))
+                                  )
+                                  and !bean(loginLogService)
+                                  and !bean(operationLogService)" id="operationServiceMethodPointCut" />
+            <aop:after-returning method="returnAdvice" pointcut-ref="operationServiceMethodPointCut"/>
+        </aop:aspect>
     </aop:config>
     
     <!-- 配置JDBCTemplate -->
@@ -149,7 +159,10 @@
          -->
         
     </bean>
-
+    
+    <!-- 实例化 -->
+    <bean id="operationLogAspect" class="com.hanpang.framework.rbac.logger.aspect.OperationLogAspect"/>
+    
 
 
 </beans>
