@@ -223,5 +223,51 @@ public class UserController extends SysControler {
 		mav.setViewName("jsp/user/detail");
 		return mav;
 	}
+	
+	@RequestMapping(value="/password",method=RequestMethod.GET)
+	public String toPassWordPage(){
+		
+		return "jsp/user/password";
+	}
+	@RequestMapping(value="/password",method=RequestMethod.PUT)
+	public ModelAndView changePassword(String password){
+		ModelAndView mav = new ModelAndView();
+		try {
+			//简单处理了
+			User user = (User) this.session.getAttribute("session_user");
+			user.setPassword(password);
+			
+			this.userService.update(user);//更新密码成功
+			
+			mav.addObject("flag", "success");
+			mav.addObject("message", "更新密码成功!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			mav.addObject("flag", "error");
+			mav.addObject("message", "更新密码失败");
+		}
+		mav.setViewName("jsp/message");
+		return mav;
+	}
+	@RequestMapping(value="/pwd",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> validationPWD(String old_password) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			
+			User user = (User) this.session.getAttribute("session_user");
+			
+			this.userService.login(user.getAccount(), old_password);
+			
+			
+			map.put("flag", "success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("message", "您输入的密码不正确，请重新输入");
+			map.put("flag", "error");
+		}
+		
+		return map;
+	}
 
 }

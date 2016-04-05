@@ -20,7 +20,7 @@
 		--%>
 		<base href="<%=basePath%>">
 		<meta charset="UTF-8">
-		<title>无标题文档</title>
+		<title>头部页面</title>
         <!-- 动态包含引入静态文件 -->
         <jsp:include page="/resource/include.jsp"/>
 		<script type="text/javascript">
@@ -38,6 +38,23 @@
 		        window.top.location.href="sys/loginOut";
 		    }
 		}
+		//修改密码口令
+		function toUpdatePWD(){
+            var d = top.dialog({
+                width:700,
+                height:300,
+                url:'sys/user/password',//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                onclose: function () {
+                if (this.returnValue=="success") {
+                    alert("下次登录使用新密码!");
+                    return false;
+                    //window.location.href=window.location.href;
+                }
+
+            }
+            });
+            d.showModal();
+        }
 		
 		</script>
 
@@ -62,7 +79,7 @@
     <div class="topright">    
     <ul>
     <li><span><img src="resource/admin/images/help.png" title="帮助"  class="helpimg"/></span><a href="#">帮助</a></li>
-    <li><a href="#">关于</a></li>
+    <li><a href="javascript:void(0)" onclick="toUpdatePWD()">变更口令</a></li>
     <li><a href="javascript:void(0)" onclick="toLoginOut()">安全退出</a></li>
     </ul>
      
